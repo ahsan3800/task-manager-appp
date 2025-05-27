@@ -12,7 +12,7 @@ export default async function Home() {
       <AddTaskForm />
       <FilterButtons />
       <TaskList />
-      Welcome to the Task Manager
+      Welcome to the Task Manager my Task
     </div>
   );
 }

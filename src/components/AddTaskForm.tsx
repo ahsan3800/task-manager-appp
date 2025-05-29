@@ -7,10 +7,14 @@ export default function TaskForm() {
   const [title, setTitle] = useState("");
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  interface AddTaskPayload {
+    title: string;
+  }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title.trim()) return;
-    dispatch(addTask({ title }));
+    dispatch(addTask({ title } as AddTaskPayload));
     setTitle("");
   };
 

@@ -20,7 +20,7 @@ export default function TaskItem({ task }: TaskItemProps) {
 
   return (
     <div className="flex justify-between items-center border p-2 rounded">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 ">
         <input
           type="checkbox"
           checked={task.completed}
@@ -30,8 +30,7 @@ export default function TaskItem({ task }: TaskItemProps) {
           {task.title}
         </span>
       </div>
-
-      <div>
+      <div className="flex">
         {/* Edit button for this task */}
         <button
           className="text-blue-600 mx-3"
@@ -44,13 +43,14 @@ export default function TaskItem({ task }: TaskItemProps) {
         {editId && (
           <EditTaskModal taskId={editId} onClose={() => setEditId(null)} />
         )}
+
+        <button
+          className="text-red-500"
+          onClick={() => dispatch(deleteTask(task.id))}
+        >
+          Delete
+        </button>
       </div>
-      <button
-        className="text-red-500"
-        onClick={() => dispatch(deleteTask(task.id))}
-      >
-        Delete
-      </button>
     </div>
   );
 }

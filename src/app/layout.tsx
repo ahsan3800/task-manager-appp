@@ -8,12 +8,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <ReduxProvider>
-        <html lang="en">
-          <body>{children}</body>
-        </html>
-      </ReduxProvider>
-    </ClerkProvider>
+    <html>
+      <body cz-shortcut-listen="true">
+        <ClerkProvider>
+          <ReduxProvider>{children}</ReduxProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 import { useDispatch } from "react-redux";
-import { toggleComplete, deleteTask } from "@/redux/features/tasks/tasksSlice";
+import type { AppDispatch } from "@/redux/store";
+import { updateTask, deleteTask } from "@/redux/features/tasks/tasksSlice";
 import EditTaskModal from "./EditTaskModal";
 import { useState } from "react";
 
@@ -10,21 +11,33 @@ type Task = {
   completed: boolean;
 };
 
+
 interface TaskItemProps {
   task: Task;
 }
 
+
+
 export default function TaskItem({ task }: TaskItemProps) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [editId, setEditId] = useState<string | null>(null);
 
+
+  
   return (
     <div className="flex justify-between items-center border p-2 rounded">
       <div className="flex items-center gap-2 ">
         <input
           type="checkbox"
           checked={task.completed}
-          onChange={() => dispatch(toggleComplete(task.id))}
+          onChange={() =>
+            dispatch(
+              updateTask({
+                id: task.id,
+                updates: { completed: !task.completed },
+              })
+            )
+          }
         />
         <span className={task.completed ? "line-through" : ""}>
           {task.title}

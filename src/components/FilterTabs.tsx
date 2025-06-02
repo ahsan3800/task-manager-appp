@@ -3,10 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { filterTasks } from "@/redux/features/tasks/tasksSlice";
 import { RootState } from "@/redux/store";
 
+
 export default function FilterTabs() {
+
   const dispatch = useDispatch();
   const currentFilter = useSelector((state: RootState) => state.tasks.filter);
 
+
+  
   return (
     <div className="flex gap-2 mb-4">
       {(

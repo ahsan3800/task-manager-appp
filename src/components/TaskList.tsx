@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import TaskItem from "@/components/TaskItem";
 
+
 export default function TaskList() {
   const { tasks, filter } = useSelector((state: RootState) => state.tasks);
 
@@ -11,6 +12,7 @@ export default function TaskList() {
     if (filter === "incomplete") return !task.completed;
     return true;
   });
+
 
   return (
     <div className="space-y-2 ">

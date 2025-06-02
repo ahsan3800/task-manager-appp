@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { filterTasks } from "../redux/features/tasks/tasksSlice";
 
+
 export default function FilterButtons() {
   const dispatch = useDispatch();
   const filter = useSelector((state: RootState) => state.tasks.filter);
 
+  
   return (
     <div className="flex justify-center gap-2 mb-4">
       {(

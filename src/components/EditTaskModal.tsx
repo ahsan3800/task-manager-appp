@@ -1,9 +1,9 @@
-// components/EditTaskModal.tsx
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
-import { editTask } from "../redux/features/tasks/tasksSlice";
+import { RootState, AppDispatch } from "../redux/store";
+import { updateTask } from "../redux/features/tasks/tasksSlice";
 
 interface EditTaskModalProps {
   taskId: string;
@@ -11,7 +11,7 @@ interface EditTaskModalProps {
 }
 
 const EditTaskModal: React.FC<EditTaskModalProps> = ({ taskId, onClose }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const task = useSelector((state: RootState) =>
     state.tasks.tasks.find((t) => t.id === taskId)
   );
@@ -27,13 +27,16 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({ taskId, onClose }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (title.trim()) {
-      dispatch(editTask({ id: taskId, title }));
+      dispatch(updateTask({ id: taskId, updates: { title } }));
+
       onClose();
     }
   };
 
   if (!task) return null;
 
+
+  
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
       <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-lg">

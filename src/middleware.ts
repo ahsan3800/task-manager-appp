@@ -3,12 +3,11 @@ import { NextResponse } from "next/server";
 
 
 const isProtectedRoute = createRouteMatcher([
-  '/dashboard(.*)',
   '/tasks(.*)',
 ]);
 
 
-export default clerkMiddleware(async (auth, req) => {
+export default clerkMiddleware (async (auth, req) => {
   if (isProtectedRoute(req)) {
     const { userId } = await auth();
     if (!userId) {

@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
 import { updateTask } from "../redux/features/tasks/tasksSlice";
-
+import Button from "./ui/Button";
+import TextField from "./ui/TextField";
 interface EditTaskModalProps {
   taskId: string;
   onClose: () => void;
@@ -35,35 +36,37 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({ taskId, onClose }) => {
 
   if (!task) return null;
 
-
-  
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
       <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-lg">
         <h2 className="text-xl font-semibold mb-4">Edit Task</h2>
         <form onSubmit={handleSubmit}>
-          <input
+          <TextField
+            label="Task Title"
+            name="title"
             type="text"
+            checked={undefined}
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
             className="w-full px-3 py-2 border rounded mb-4"
             placeholder="Update task title"
-            required
+            required={true}
           />
           <div className="flex justify-end space-x-2">
-            <button
+            <Button
               type="button"
               onClick={onClose}
               className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+              onClick={() => {}}
             >
               Save
-            </button>
+            </Button>
           </div>
         </form>
       </div>

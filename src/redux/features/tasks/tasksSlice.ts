@@ -28,7 +28,7 @@ export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
 export const addTask = createAsyncThunk(
   "tasks/addTask",
   async (task: { title: string; completed: boolean }) => {
-    return await addTaskAPI(task); // task already includes completed
+    return await addTaskAPI(task);
   }
 );
 
@@ -57,10 +57,7 @@ const tasksSlice = createSlice({
     deleteTask: (state, action: PayloadAction<string>) => {
       state.tasks = state.tasks.filter((task) => task.id !== action.payload);
     },
-    // toggleComplete: (state, action: PayloadAction<string>) => {
-    //   const task = state.tasks.find((t) => t.id === action.payload);
-    //   if (task) task.completed = !task.completed;
-    // },
+
     filterTasks: (state, action: PayloadAction<TasksState["filter"]>) => {
       state.filter = action.payload;
     },

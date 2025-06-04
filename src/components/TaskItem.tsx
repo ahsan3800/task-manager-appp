@@ -1,11 +1,12 @@
 "use client";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "@/redux/store";
-import { updateTask, deleteTask } from "@/redux/features/tasks/tasksSlice";
-import EditTaskModal from "./EditTaskModal";
 import { useState } from "react";
-import Button from "../components/ui/Button";
-import TextField from "../components/ui/TextField";
+import Button from "./ui/Button";
+import TextField from "./ui/TextField";
+import EditTaskModal from "./EditTaskModal";
+import {
+  useUpdateTaskMutation,
+  useDeleteTaskMutation,
+} from "@/redux/features/tasks/tasksAPI";
 
 type Task = {
   id: string;
@@ -18,20 +19,16 @@ interface TaskItemProps {
 }
 
 export default function TaskItem({ task }: TaskItemProps) {
-  const dispatch = useDispatch<AppDispatch>();
   const [editId, setEditId] = useState<string | null>(null);
+  const [updateTask] = useUpdateTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
 
   const handleChangeStatus = () => {
-    dispatch(
-      updateTask({
-        id: task.id,
-        updates: { completed: !task.completed },
-      })
-    );
+    updateTask({ id: task.id, updates: { completed: !task.completed } });
   };
 
   const handleDelete = () => {
-    dispatch(deleteTask(task.id));
+    deleteTask(task.id);
   };
 
   const handleEdit = () => {
@@ -44,13 +41,13 @@ export default function TaskItem({ task }: TaskItemProps) {
 
   return (
     <div className="flex justify-between items-center border p-2 rounded">
-      <div className="flex items-center gap-2 ">
+      <div className="flex items-center gap-2">
         <TextField
           label=""
           name={`completed-${task.id}`}
           type="checkbox"
           checked={task.completed}
-          value={task.completed ? "true" : "false"}
+          value={task.completed}
           placeholder=""
           required={false}
           onChange={handleChangeStatus}
@@ -64,9 +61,7 @@ export default function TaskItem({ task }: TaskItemProps) {
         <Button className="text-blue-600 mx-3" onClick={handleEdit}>
           Edit
         </Button>
-
         {editId && <EditTaskModal taskId={editId} onClose={handleCloseModal} />}
-
         <Button className="text-red-500" onClick={handleDelete}>
           Delete
         </Button>

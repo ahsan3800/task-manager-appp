@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { filterTasks } from "../redux/features/tasks/tasksSlice";
 import Button from "./ui/Button";
+
+
 export default function FilterButtons() {
   const dispatch = useDispatch();
   const filter = useSelector((state: RootState) => state.tasks.filter);

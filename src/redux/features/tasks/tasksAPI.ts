@@ -1,43 +1,77 @@
 
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+
+
 export interface Task {
   id: string;
   title: string;
   completed: boolean;
 }
 
+
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL as string;
 
-export const fetchTasksAPI = async (): Promise<Task[]> => {
-  const response = await fetch(BASE_URL);
-  if (!response.ok) throw new Error("Failed to fetch tasks");
-  return response.json();
-};
 
-export const addTaskAPI = async (task: Omit<Task, "id">): Promise<Task> => {
-  const response = await fetch(BASE_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(task),
-  });
-  if (!response.ok) throw new Error("Failed to add task");
-  return response.json();
-};
+export const callApiData = createApi({ 
 
-export const updateTaskAPI = async (id: string, updates: Partial<Task>): Promise<Task> => {
-  const existingResponse = await fetch(`${BASE_URL}/${id}`);
-  if (!existingResponse.ok) throw new Error("Failed to fetch existing task");
-  const existingTask: Task = await existingResponse.json();
+  reducerPath: 'callApiData',
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  tagTypes: ['Tasks'],
 
-  const updatedTask = { ...existingTask, ...updates };
 
-  const response = await fetch(`${BASE_URL}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updatedTask),
-  });
+  endpoints: (builder) => ({
 
-  if (!response.ok) throw new Error("Failed to update task");
-  return response.json();
-};
+
+    getTasks: builder.query<Task[], void>({
+      query: () => '',
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map((task) => ({ type: "Tasks" as const, id: task.id })),
+              { type: "Tasks" as const, id: "LIST" }
+            ]
+          : [{ type: "Tasks" as const, id: "LIST" }],
+      }),
+
+
+    addTask: builder.mutation<Task, Omit<Task, 'id'>>({
+      query: (task) => ({
+        url: '',
+        method: 'POST',
+        body: task,
+      }),
+      invalidatesTags: [{ type: 'Tasks', id: 'LIST' }],
+    }),
+
+
+
+    updateTask: builder.mutation<Task, { id: string; updates: Partial<Task> }>({
+      query: ({ id, updates }) => ({
+        url: `/${id}`,
+        method: "PATCH",
+        body: updates,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: 'Tasks', id }],
+    }),
+
+
+
+    deleteTask: builder.mutation<{ success: boolean; id: string }, string>({
+      query: (id) => ({
+        url: `/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, id) => [{ type: 'Tasks', id }],
+    }),
+
+
+  }),
+
+  
+});
+
+
+
+export const { useGetTasksQuery, useAddTaskMutation, useUpdateTaskMutation, useDeleteTaskMutation,} = callApiData;

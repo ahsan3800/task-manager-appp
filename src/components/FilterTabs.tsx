@@ -1,13 +1,16 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
-import { filterTasks } from "@/redux/features/tasks/tasksSlice";
 import { RootState } from "@/redux/store";
+import { filterTasks } from "@/redux/features/tasks/tasksSlice";
 import Button from "./ui/Button";
 import { TaskFilterStatus } from "../constants/enum";
 
 export default function FilterTabs() {
   const dispatch = useDispatch();
-  const currentFilter = useSelector((state: RootState) => state.tasks.filter);
+
+  const currentFilter = useSelector(
+    (state: RootState) => state.tasksFilter.filter
+  );
 
   return (
     <div className="flex gap-2 mb-4">

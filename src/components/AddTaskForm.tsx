@@ -1,32 +1,53 @@
 "use client";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addTask } from "../redux/features/tasks/tasksSlice";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { useAddTaskMutation } from "@/redux/features/tasks/tasksAPI";
+import Button from "@/components/ui/Button";
+import TextField from "@/components/ui/TextField";
+import { FormikHelpers } from "formik";
 
-export default function AddTaskForm() {
-  const [text, setText] = useState("");
-  const dispatch = useDispatch();
+interface TaskFormValues {
+  taskTitle: string;
+}
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (text.trim()) {
-      dispatch(addTask(text));
-      setText("");
-    }
+export default function TaskForm() {
+  const [addTask] = useAddTaskMutation();
+
+  const initialValues: TaskFormValues = { taskTitle: "" };
+
+  const validationSchema = Yup.object({
+    taskTitle: Yup.string().required("Task title is required"),
+  });
+
+  const handleSubmit = async (
+    values: TaskFormValues,
+    { resetForm }: FormikHelpers<TaskFormValues>
+  ) => {
+    await addTask({ title: values.taskTitle, completed: false });
+    resetForm();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Add a task"
-        className="w-full px-4 py-2 border rounded"
-      />
-      <button type="submit" className="bg-blue-500 text-white px-4 rounded">
-        Add
-      </button>
-    </form>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      <Form className="flex flex-col gap-2 mb-4">
+        <TextField
+          label="Task Title"
+          name="taskTitle"
+          placeholder="New Task"
+          required
+        />
+        <Button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+          onClick={() => {}}
+        >
+          Add Task
+        </Button>
+      </Form>
+    </Formik>
   );
 }

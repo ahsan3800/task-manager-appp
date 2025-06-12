@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "server": "json-server --watch db.json --port 3001",
+    "start:all": "concurrently \"npm run dev\" \"npm run server",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
@@ -12,12 +14,17 @@
     "@clerk/nextjs": "^6.20.0",
     "@reduxjs/toolkit": "^2.8.2",
     "autoprefixer": "^10.4.21",
+    "axios": "^1.9.0",
+    "formik": "^2.4.6",
+    "lucide-react": "^0.511.0",
     "next": "15.3.2",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
-    "styled-components": "^6.1.18"
+    "react-toastify": "^11.0.5",
+    "styled-components": "^6.1.18",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -25,8 +32,10 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^9.1.2",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
+    "json-server": "^1.0.0-beta.3",
     "tailwindcss": "^4.1.7",
     "typescript": "^5"
   }

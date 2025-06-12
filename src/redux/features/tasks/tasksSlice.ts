@@ -1,37 +1,25 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface Task {
-  id: string
-  text: string
-  completed: boolean
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface TasksState {
+  filter: "all" | "completed" | "incomplete";
 }
 
-interface TaskState {
-  tasks: Task[]
-  filter: 'all' | 'completed' | 'active'
-}
+const initialState: TasksState = {
+  filter: "all",
+};
 
-const initialState: TaskState = {
-  tasks: [],
-  filter: 'all',
-}
-
-const taskSlice = createSlice({
-  name: 'tasks',
+const tasksSlice = createSlice({
+  name: "tasksFilter",
   initialState,
   reducers: {
-    addTask: (state, action: PayloadAction<string>) => {
-      state.tasks.push({ id: Date.now().toString(), text: action.payload, completed: false })
-    },
-    toggleTask: (state, action: PayloadAction<string>) => {
-      const task = state.tasks.find(t => t.id === action.payload)
-      if (task) task.completed = !task.completed
-    },
-    setFilter: (state, action: PayloadAction<TaskState['filter']>) => {
-      state.filter = action.payload
+    filterTasks: (state, action: PayloadAction<TasksState["filter"]>) => {
+      state.filter = action.payload;
     },
   },
-})
+});
 
-export const { addTask, toggleTask, setFilter } = taskSlice.actions
-export default taskSlice.reducer
+
+
+export const { filterTasks } = tasksSlice.actions;
+export default tasksSlice.reducer;

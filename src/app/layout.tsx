@@ -1,6 +1,12 @@
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { ReduxProvider } from "../redux/provider";
+import { ReduxProvider } from "@/redux/provider";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Task Manager App",
+  description: "An awesome app with Clerk and Redux",
+};
 
 export default function RootLayout({
   children,
@@ -9,11 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <ReduxProvider>
-        <html lang="en">
-          <body>{children}</body>
-        </html>
-      </ReduxProvider>
+      <html lang="en">
+        <body cz-shortcut-listen="true">
+          <ReduxProvider>{children}</ReduxProvider>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

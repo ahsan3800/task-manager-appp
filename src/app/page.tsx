@@ -1,18 +1,5 @@
-import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
-import AddTaskForm from "@/components/AddTaskForm";
-import FilterButtons from "@/components/FilterButtons";
-import TaskList from "@/components/TaskList";
+import Homepage from "@/components/Homepage";
 
-export default async function Home() {
-  const { userId } = await auth();
-  if (userId) redirect("/tasks");
-  return (
-    <div className="text-center pt-20">
-      <AddTaskForm />
-      <FilterButtons />
-      <TaskList />
-      Welcome to the Task Manager
-    </div>
-  );
+export default function Home() {
+  return <Homepage />;
 }

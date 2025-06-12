@@ -1,39 +1,35 @@
 "use client";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
-import { toggleTask } from "../redux/features/tasks/tasksSlice";
-
-// Define the Task type if not already imported
-type Task = {
-  id: string;
-  text: string;
-  completed: boolean;
-};
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import TaskItem from "@/components/TaskItem";
+import { TaskFilterStates } from "@/constants/filters";
+import { useGetTasksQuery } from "@/redux/features/tasks/tasksAPI";
 
 export default function TaskList() {
-  const dispatch = useDispatch();
-  const { tasks, filter } = useSelector((state: RootState) => state.tasks);
+  const filter = useSelector((state: RootState) => state.tasksFilter.filter);
+  const { data: tasks = [], isLoading, error } = useGetTasksQuery();
 
-  const filteredTasks = tasks.filter((task) => {
-    if (filter === "active") return !task.completed;
-    if (filter === "completed") return task.completed;
-    return true;
-  });
+  const isArray = Array.isArray(tasks);
+
+  const filteredTasks = isArray
+    ? tasks.filter((task) => {
+        if (filter === TaskFilterStates.COMPLETED) return task.completed;
+        if (filter === TaskFilterStates.INCOMPLETE) return !task.completed;
+        return true;
+      })
+    : [];
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Failed to load tasks</p>;
+
+  if (!isArray) return <p>Unexpected data format.</p>;
+  if (filteredTasks.length === 0) return <p>No tasks found.</p>;
 
   return (
-    <ul className="space-y-2">
-      {filteredTasks.map((task: Task) => (
-        <li
-          key={task.id}
-          className="flex items-center gap-2 px-4 py-2 border rounded cursor-pointer"
-          onClick={() => dispatch(toggleTask(task.id))}
-        >
-          <input type="checkbox" checked={task.completed} readOnly />
-          <span className={task.completed ? "line-through text-gray-400" : ""}>
-            {task.text}
-          </span>
-        </li>
+    <div className="space-y-2">
+      {filteredTasks.map((task) => (
+        <TaskItem key={task.id} task={task} />
       ))}
-    </ul>
+    </div>
   );
 }

@@ -6,7 +6,7 @@ import TaskForm from "@/components/AddTaskForm";
 import FilterTabs from "@/components/FilterTabs";
 import { UserButton, useClerk } from "@clerk/nextjs";
 import { CircleCheckBig, LogOut } from "lucide-react";
-
+import Button from "@/components/ui/Button";
 export default function TasksPage() {
   const { signOut } = useClerk();
 
@@ -24,7 +24,7 @@ export default function TasksPage() {
             </div>
             <div className="flex items-center gap-3">
               <UserButton />
-              <button
+              <Button
                 onClick={() =>
                   signOut(() => {
                     window.location.href = "/";
@@ -34,7 +34,7 @@ export default function TasksPage() {
               >
                 <LogOut size={16} />
                 Log Out
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -42,16 +42,8 @@ export default function TasksPage() {
           <section className="bg-indigo-50 rounded-xl p-5 shadow-inner">
             <TaskForm />
           </section>
-
-          {/* Filter Tabs */}
-          <section>
-            <FilterTabs />
-          </section>
-
-          {/* Task List */}
-          <section>
-            <TaskList />
-          </section>
+          <FilterTabs />
+          <TaskList />
         </div>
       </div>
     </AuthGuard>

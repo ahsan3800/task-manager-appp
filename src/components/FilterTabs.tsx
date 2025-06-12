@@ -1,30 +1,29 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
-import { filterTasks } from "@/redux/features/tasks/tasksSlice";
 import { RootState } from "@/redux/store";
-
+import { filterTasks } from "@/redux/features/tasks/tasksSlice";
+import Button from "./ui/Button";
+import { TaskFilterStatus } from "../constants/enum";
 
 export default function FilterTabs() {
-
   const dispatch = useDispatch();
-  const currentFilter = useSelector((state: RootState) => state.tasks.filter);
 
+  const currentFilter = useSelector(
+    (state: RootState) => state.tasksFilter.filter
+  );
 
-  
   return (
     <div className="flex gap-2 mb-4">
-      {(
-        ["all", "completed", "incomplete"] as Array<"all" | "completed" | "incomplete">
-      ).map((f) => (
-        <button
-          key={f}
-          onClick={() => dispatch(filterTasks(f))}
+      {(Object.values(TaskFilterStatus) as TaskFilterStatus[]).map((status) => (
+        <Button
+          key={status}
+          onClick={() => dispatch(filterTasks(status))}
           className={`px-3 py-1 rounded ${
-            currentFilter === f ? "bg-blue-500 text-white" : "bg-gray-200"
+            currentFilter === status ? "bg-blue-500 text-white" : "bg-gray-200"
           }`}
         >
-          {f[0].toUpperCase() + f.slice(1)}
-        </button>
+          {status[0].toUpperCase() + status.slice(1)}
+        </Button>
       ))}
     </div>
   );

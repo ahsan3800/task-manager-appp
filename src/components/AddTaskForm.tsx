@@ -1,50 +1,41 @@
 "use client";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/store";
-import { addTask } from "../redux/features/tasks/tasksSlice";
-
+import { useAddTaskMutation } from "@/redux/features/tasks/tasksAPI";
+import Button from "./ui/Button";
+import TextField from "./ui/TextField";
 
 export default function TaskForm() {
   const [title, setTitle] = useState("");
-  const [completed, setCompleted] = useState(false); // ✅ Add state for checkbox
-  const dispatch = useDispatch<AppDispatch>();
+  const [addTask] = useAddTaskMutation();
 
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title.trim()) return;
-    dispatch(addTask({ title, completed })); // ✅ Now use actual checkbox value
+    await addTask({ title, completed: false });
     setTitle("");
-    setCompleted(false); // reset checkbox
   };
 
-  
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2 mb-4">
-      <input
+      <TextField
+        label="Task Title"
+        name="taskTitle"
         type="text"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        checked={false}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setTitle(e.target.value)
+        }
         placeholder="New Task"
-        className="border p-2"
+        required
       />
-
-      {/* <label className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          checked={completed}
-          onChange={(e) => setCompleted(e.target.checked)}
-        />
-        Mark as completed
-      </label> */}
-
-      <button
+      <Button
         type="submit"
         className="bg-blue-600 text-white px-4 py-2 rounded"
+        onClick={() => {}}
       >
         Add Task
-      </button>
+      </Button>
     </form>
   );
 }

@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import styled from "styled-components";
+import { Wrapper, Highlight, FeatureCard, Icon } from "./styles";
+
+import Button from "./ui/Button";
 const Homepage = () => {
   return (
     <Wrapper className="min-h-screen bg-gradient-to-br from-white to-indigo-50 text-gray-800">
@@ -17,15 +19,21 @@ const Homepage = () => {
 
         <div className="flex flex-wrap gap-4 justify-center">
           <Link href="/sign-up">
-            <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition-all duration-300">
+            <Button
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition-all duration-300"
+              onClick={() => {}}
+            >
               Get Started
-            </button>
+            </Button>
           </Link>
 
           <Link href="/sign-in">
-            <button className="bg-white border border-gray-300 hover:bg-gray-100 text-gray-800 font-semibold py-3 px-8 rounded-xl shadow-md transition-all duration-300">
+            <Button
+              className="bg-white border border-gray-300 hover:bg-gray-100 text-gray-800 font-semibold py-3 px-8 rounded-xl shadow-md transition-all duration-300"
+              onClick={() => {}}
+            >
               Sign In
-            </button>
+            </Button>
           </Link>
         </div>
       </section>
@@ -68,38 +76,5 @@ const Homepage = () => {
     </Wrapper>
   );
 };
-
-// Styled Components
-const Wrapper = styled.main`
-  font-family: "Inter", sans-serif;
-`;
-
-const Highlight = styled.span`
-  background: linear-gradient(to right, #6366f1, #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-`;
-
-const FeatureCard = styled.div.attrs({
-  className:
-    "bg-gray-50 rounded-2xl shadow-lg p-8 text-center transition-transform duration-300 hover:-translate-y-2",
-})`
-  h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #1f2937;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  p {
-    font-size: 1rem;
-    color: #4b5563;
-  }
-`;
-
-const Icon = styled.div`
-  font-size: 2.5rem;
-`;
 
 export default Homepage;

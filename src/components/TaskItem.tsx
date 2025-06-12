@@ -1,9 +1,12 @@
 "use client";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "@/redux/store";
-import { updateTask, deleteTask } from "@/redux/features/tasks/tasksSlice";
-import EditTaskModal from "./EditTaskModal";
 import { useState } from "react";
+import Button from "./ui/Button";
+import TextField from "./ui/TextField";
+import EditTaskModal from "./EditTaskModal";
+import {
+  useUpdateTaskMutation,
+  useDeleteTaskMutation,
+} from "@/redux/features/tasks/tasksAPI";
 
 type Task = {
   id: string;
@@ -11,58 +14,57 @@ type Task = {
   completed: boolean;
 };
 
-
 interface TaskItemProps {
   task: Task;
 }
 
-
-
 export default function TaskItem({ task }: TaskItemProps) {
-  const dispatch = useDispatch<AppDispatch>();
   const [editId, setEditId] = useState<string | null>(null);
+  const [updateTask] = useUpdateTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
 
+  const handleChangeStatus = () => {
+    updateTask({ id: task.id, updates: { completed: !task.completed } });
+  };
 
-  
+  const handleDelete = () => {
+    deleteTask(task.id);
+  };
+
+  const handleEdit = () => {
+    setEditId(task.id);
+  };
+
+  const handleCloseModal = () => {
+    setEditId(null);
+  };
+
   return (
     <div className="flex justify-between items-center border p-2 rounded">
-      <div className="flex items-center gap-2 ">
-        <input
+      <div className="flex items-center gap-2">
+        <TextField
+          label=""
+          name={`completed-${task.id}`}
           type="checkbox"
           checked={task.completed}
-          onChange={() =>
-            dispatch(
-              updateTask({
-                id: task.id,
-                updates: { completed: !task.completed },
-              })
-            )
-          }
+          value={task.completed}
+          placeholder=""
+          required={false}
+          onChange={handleChangeStatus}
         />
         <span className={task.completed ? "line-through" : ""}>
           {task.title}
         </span>
       </div>
+
       <div className="flex">
-        {/* Edit button for this task */}
-        <button
-          className="text-blue-600 mx-3"
-          onClick={() => setEditId(task.id)}
-        >
+        <Button className="text-blue-600 mx-3" onClick={handleEdit}>
           Edit
-        </button>
-
-        {/* Edit Modal */}
-        {editId && (
-          <EditTaskModal taskId={editId} onClose={() => setEditId(null)} />
-        )}
-
-        <button
-          className="text-red-500"
-          onClick={() => dispatch(deleteTask(task.id))}
-        >
+        </Button>
+        {editId && <EditTaskModal taskId={editId} onClose={handleCloseModal} />}
+        <Button className="text-red-500" onClick={handleDelete}>
           Delete
-        </button>
+        </Button>
       </div>
     </div>
   );

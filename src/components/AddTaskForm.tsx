@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useAddTaskMutation } from "@/redux/features/tasks/tasksAPI";
-import Button from "./ui/Button";
-import TextField from "./ui/TextField";
+import Button from "@/components/ui/Button";
+import TextField from "@/components/ui/TextField";
 
 export default function TaskForm() {
   const [title, setTitle] = useState("");
@@ -28,6 +28,7 @@ export default function TaskForm() {
         }
         placeholder="New Task"
         required
+        error={false}
       />
       <Button
         type="submit"

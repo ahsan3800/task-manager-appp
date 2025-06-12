@@ -1,7 +1,7 @@
 
 import { configureStore } from '@reduxjs/toolkit';
-import tasksFilterSilce from './features/tasks/tasksSlice';
-import { callApiData } from './features/tasks/tasksAPI';
+import tasksFilterSilce from '@/redux/features/tasks/tasksSlice';
+import { callApiData } from '@/redux/features/tasks/tasksAPI';
 
 export const store = configureStore({
   reducer: {

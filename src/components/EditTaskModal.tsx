@@ -1,7 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Button from "./ui/Button";
-import TextField from "./ui/TextField";
+import React, { useEffect, useState, useMemo } from "react";
+import Button from "@/components/ui/Button";
+import TextField from "@/components/ui/TextField";
 import {
   useUpdateTaskMutation,
   useGetTasksQuery,
@@ -15,7 +15,10 @@ interface EditTaskModalProps {
 const EditTaskModal: React.FC<EditTaskModalProps> = ({ taskId, onClose }) => {
   const { data: tasks } = useGetTasksQuery();
   const [updateTask] = useUpdateTaskMutation();
-  const task = tasks?.find((t) => t.id === taskId);
+
+  const task = useMemo(() => {
+    return tasks?.find((t) => t.id === taskId);
+  }, [tasks, taskId]);
 
   const [title, setTitle] = useState("");
 
@@ -52,6 +55,7 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({ taskId, onClose }) => {
             className="w-full px-3 py-2 border rounded mb-4"
             placeholder="Update task title"
             required
+            error={false}
           />
           <div className="flex justify-end space-x-2">
             <Button

@@ -1,6 +1,6 @@
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { ReduxProvider } from "../redux/provider";
+import { ReduxProvider } from "@/redux/provider";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

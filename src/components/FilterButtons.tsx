@@ -1,21 +1,17 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
-import { filterTasks } from "../redux/features/tasks/tasksSlice";
-import Button from "./ui/Button";
-
+import { RootState } from "@/redux/store";
+import { filterTasks } from "@/redux/features/tasks/tasksSlice";
+import Button from "@/components/ui/Button";
+import { TaskFilterStatus } from "@/constants/enum";
 
 export default function FilterButtons() {
   const dispatch = useDispatch();
-  const filter = useSelector((state: RootState) => state.tasks.filter);
+  const filter = useSelector((state: RootState) => state.tasksFilter.filter);
 
   return (
     <div className="flex justify-center gap-2 mb-4">
-      {(
-        ["all", "completed", "incomplete"] as Array<
-          "all" | "completed" | "incomplete"
-        >
-      ).map((f) => (
+      {Object.values(TaskFilterStatus).map((f) => (
         <Button
           key={f}
           className={`px-3 py-1 rounded ${

@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import Button from "./ui/Button";
-import TextField from "./ui/TextField";
-import EditTaskModal from "./EditTaskModal";
+import Button from "@/components/ui/Button";
+import TextField from "@/components/ui/TextField";
+import EditTaskModal from "@/components/EditTaskModal";
 import {
   useUpdateTaskMutation,
   useDeleteTaskMutation,
@@ -17,11 +17,10 @@ type Task = {
 interface TaskItemProps {
   task: Task;
 }
-
 export default function TaskItem({ task }: TaskItemProps) {
   const [editId, setEditId] = useState<string | null>(null);
-  const [updateTask] = useUpdateTaskMutation();
-  const [deleteTask] = useDeleteTaskMutation();
+  const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation();
+  const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
 
   const handleChangeStatus = () => {
     updateTask({ id: task.id, updates: { completed: !task.completed } });
@@ -51,6 +50,8 @@ export default function TaskItem({ task }: TaskItemProps) {
           placeholder=""
           required={false}
           onChange={handleChangeStatus}
+          disabled={isUpdating}
+          error={null}
         />
         <span className={task.completed ? "line-through" : ""}>
           {task.title}
@@ -58,12 +59,22 @@ export default function TaskItem({ task }: TaskItemProps) {
       </div>
 
       <div className="flex">
-        <Button className="text-blue-600 mx-3" onClick={handleEdit}>
-          Edit
+        <Button
+          className="text-blue-600 mx-3"
+          onClick={handleEdit}
+          disabled={isUpdating || isDeleting}
+        >
+          {isUpdating ? "Updating..." : "Edit"}
         </Button>
+
         {editId && <EditTaskModal taskId={editId} onClose={handleCloseModal} />}
-        <Button className="text-red-500" onClick={handleDelete}>
-          Delete
+
+        <Button
+          className="text-red-500"
+          onClick={handleDelete}
+          disabled={isDeleting || isUpdating}
+        >
+          {isDeleting ? "Deleting..." : "Delete"}
         </Button>
       </div>
     </div>

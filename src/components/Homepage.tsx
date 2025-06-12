@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Wrapper, Highlight, FeatureCard, Icon } from "./styles";
+import { Wrapper, Highlight, FeatureCard, Icon } from "@/components/styles";
 
 import Button from "./ui/Button";
 const Homepage = () => {

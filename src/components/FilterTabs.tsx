@@ -2,8 +2,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { filterTasks } from "@/redux/features/tasks/tasksSlice";
-import Button from "./ui/Button";
-import { TaskFilterStatus } from "../constants/enum";
+import Button from "@/components/ui/Button";
+import { TaskFilterStatus } from "@/constants/enum";
 
 export default function FilterTabs() {
   const dispatch = useDispatch();
